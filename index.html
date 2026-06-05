@@ -808,7 +808,7 @@ footer{
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
-    <a href="THARUNSHREE_RESUME.docx" download class="nav-cta">Download CV</a>
+    <a href="./files/THARUNSHREE_RESUME.pdf" download class="nav-cta">Download CV</a>
     <button class="ham" id="ham" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -1165,7 +1165,7 @@ footer{
               <div class="tl-top">
                 <span class="tl-company">VMKV Engineering College</span>
                 <span class="tl-period">2022 – 2026</span>
-                <span class="tl-status ongoing">Final Year</span>
+                <span class="tl-status done">Completed</span>
               </div>
               <div class="tl-role">B.E – Artificial Intelligence & Data Science</div>
               <ul class="tl-tasks">
@@ -1233,11 +1233,11 @@ footer{
       <p>Data Scientist · Data Analyst · Machine Learning Engineer</p>
       <p class="resume-updated">Last Updated: June 2026</p>
       <div class="resume-btns">
-        <a href="THARUNSHREE_RESUME.docx" target="_blank" class="btn-gold">
+        <a href="./files/THARUNSHREE_RESUME.pdf" target="_blank" class="btn-gold">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           View Resume
         </a>
-        <a href="THARUNSHREE_RESUME.docx" download class="btn-ghost">
+        <a href="./files/THARUNSHREE_RESUME.pdf" download class="btn-ghost">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download CV
         </a>
@@ -1286,20 +1286,20 @@ footer{
         </div>
         <div class="form-row">
           <div class="f-group">
-            <input type="text" id="fn" placeholder="Your Name" class="f-input"/>
+            <input type="text" id="fn" placeholder="Your Name" name="name" class="f-input"/>
             <span class="f-err" id="fn-err"></span>
           </div>
           <div class="f-group">
-            <input type="email" id="fe" placeholder="Your Email" class="f-input"/>
+            <input type="email" id="fe" placeholder="Your Email" name="email" class="f-input"/>
             <span class="f-err" id="fe-err"></span>
           </div>
         </div>
         <div class="f-group">
-          <input type="text" id="fs" placeholder="Subject" class="f-input"/>
+          <input type="text" id="fs" placeholder="Subject" name="subject" class="f-input"/>
           <span class="f-err" id="fs-err"></span>
         </div>
         <div class="f-group">
-          <textarea id="fm" rows="5" placeholder="Your Message" class="f-input"></textarea>
+          <textarea id="fm" rows="5" placeholder="Your Message" name="message" class="f-input"></textarea>
           <span class="f-err" id="fm-err"></span>
         </div>
         <button class="btn-gold" style="width:100%;justify-content:center" id="sendBtn" onclick="submitForm()">
@@ -1319,6 +1319,8 @@ footer{
     <div class="footer-tech">Built with HTML · CSS · JavaScript</div>
   </div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
 /* ==============================================
@@ -1539,26 +1541,83 @@ document.querySelectorAll('.proj-card,.cert-card,.tl-card').forEach(card=>{
 });
 
 // --- CONTACT FORM ---
-function submitForm(){
-  const fn=document.getElementById('fn'),fe=document.getElementById('fe'),
-        fs=document.getElementById('fs'),fm=document.getElementById('fm');
-  ['fn','fe','fs','fm'].forEach(id=>document.getElementById(id+'-err').textContent='');
-  let ok=true;
-  if(!fn.value.trim()){document.getElementById('fn-err').textContent='Name required.';ok=false;}
-  if(!fe.value.trim()||!/\S+@\S+\.\S+/.test(fe.value)){document.getElementById('fe-err').textContent='Valid email required.';ok=false;}
-  if(!fs.value.trim()){document.getElementById('fs-err').textContent='Subject required.';ok=false;}
-  if(!fm.value.trim()){document.getElementById('fm-err').textContent='Message required.';ok=false;}
-  if(!ok)return;
-  const btn=document.getElementById('sendBtn'),txt=document.getElementById('sendTxt');
-  btn.disabled=true;txt.textContent='Sending…';
-  setTimeout(()=>{
-    document.getElementById('successBox').style.display='flex';
-    [fn,fe,fs,fm].forEach(f=>f.value='');
-    btn.disabled=false;txt.textContent='Send Message';
-    setTimeout(()=>document.getElementById('successBox').style.display='none',6000);
-  },1600);
+emailjs.init("p5LOf9xDHabxXQaXE"); // Replace with your EmailJS user ID
+
+function submitForm() {
+  const fn = document.getElementById('fn');
+  const fe = document.getElementById('fe');
+  const fs = document.getElementById('fs');
+  const fm = document.getElementById('fm');
+
+  ['fn','fe','fs','fm'].forEach(id => {
+    document.getElementById(id + '-err').textContent = '';
+  });
+
+  let ok = true;
+
+  if (!fn.value.trim()) {
+    document.getElementById('fn-err').textContent = 'Name required.';
+    ok = false;
+  }
+
+  if (!fe.value.trim() || !/\S+@\S+\.\S+/.test(fe.value)) {
+    document.getElementById('fe-err').textContent = 'Valid email required.';
+    ok = false;
+  }
+
+  if (!fs.value.trim()) {
+    document.getElementById('fs-err').textContent = 'Subject required.';
+    ok = false;
+  }
+
+  if (!fm.value.trim()) {
+    document.getElementById('fm-err').textContent = 'Message required.';
+    ok = false;
+  }
+
+  if (!ok) return;
+
+  const btn = document.getElementById('sendBtn');
+  const txt = document.getElementById('sendTxt');
+
+  btn.disabled = true;
+  txt.textContent = 'Sending...';
+
+  emailjs.send(
+    "service_fzru1vg",
+    "template_rtfe10h",
+    {
+      name: fn.value,
+    email: fe.value,
+    subject: fs.value,
+    message: fm.value,
+    title: fs.value,
+    time: new Date().toLocaleString()
+    }
+  )
+  .then(() => {
+    document.getElementById('successBox').style.display = 'flex';
+
+    fn.value = '';
+    fe.value = '';
+    fs.value = '';
+    fm.value = '';
+
+    setTimeout(() => {
+      document.getElementById('successBox').style.display = 'none';
+    }, 6000);
+  })
+  .catch((error) => {
+    console.error(error);
+    alert('Failed to send message.');
+  })
+  .finally(() => {
+    btn.disabled = false;
+    txt.textContent = 'Send Message';
+  });
 }
-window.submitForm=submitForm;
+
+window.submitForm = submitForm;
 
 // --- SMOOTH SCROLL ---
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
